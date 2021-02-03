@@ -59,6 +59,7 @@ dot_motion_coherence_shader = [
     """
 ]
 
+
 class MyApp(ShowBase):
     def __init__(self, shared):
 
@@ -77,7 +78,6 @@ class MyApp(ShowBase):
         ############
         # Update the lense
         self.disableMouse()
-
 
         ############
         # Compile the motion shader
@@ -104,8 +104,8 @@ class MyApp(ShowBase):
         self.circles.setShader(self.compiled_dot_motion_shader)
 
         self.dots_position = np.empty((1, 10000, 3)).astype(np.float32)
-        self.dots_position[0, :, 0] = 2*np.random.random(10000).astype(np.float32) - 1 # x
-        self.dots_position[0, :, 1] = 2*np.random.random(10000).astype(np.float32) - 1 # y
+        self.dots_position[0, :, 0] = 2*np.random.random(10000).astype(np.float32) - 1  # x
+        self.dots_position[0, :, 1] = 2*np.random.random(10000).astype(np.float32) - 1  # y
         self.dots_position[0, :, 2] = np.ones(10000)*self.shared.stimulus_properties_brightness_of_dots.value
 
         memoryview(self.dummytex.modify_ram_image())[:] = self.dots_position.tobytes()
@@ -158,7 +158,7 @@ class MyApp(ShowBase):
             self.circles.setShaderInput("size_of_dots", self.shared.stimulus_properties_size_of_dots.value)
 
         #######
-        # Continously update the dot stimulus
+        # Continuously update the dot stimulus
         dt = task.time - self.last_time
         self.last_time = task.time
 
@@ -173,7 +173,7 @@ class MyApp(ShowBase):
         # Randomly redraw dot with a short lifetime
         k = np.random.random(10000)
         if self.shared.stimulus_properties_lifetime_of_dots.value == 0:
-            ind = np.where(k >= 0)[0]
+            ind = np.where(k >= 0)[0]  # TODO: why not simply ind = np.range(1000)?
         else:
             ind = np.where(k < dt / self.shared.stimulus_properties_lifetime_of_dots.value)[0]
 
@@ -181,7 +181,7 @@ class MyApp(ShowBase):
         self.dots_position[0, :, 1][ind] = 2 * np.random.random(len(ind)).astype(np.float32) - 1  # y
         self.dots_position[0, :, 2] = np.ones(10000)*self.shared.stimulus_properties_brightness_of_dots.value
 
-        # Wrap them
+        # Wrap them  # TODO: why take modulus 2 (%2) ?
         self.dots_position[0, :, 0] = (self.dots_position[0, :, 0] + 1) % 2 - 1
         self.dots_position[0, :, 1] = (self.dots_position[0, :, 1] + 1) % 2 - 1
 

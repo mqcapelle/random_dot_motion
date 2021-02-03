@@ -50,12 +50,10 @@ class Shared():
             self.stimulus_properties_lifetime_of_dots.value = values["stimulus_properties_lifetime_of_dots"]
             self.stimulus_properties_brightness_of_dots.value = values["stimulus_properties_brightness_of_dots"]
 
-
         except Exception as e:
             print(e)
 
     def save_values(self):
-
         try:
             values = dict({})
 
